@@ -1,0 +1,221 @@
+:root {
+  color-scheme: dark;
+  --bg: #0c111b;
+  --bg-elevated: #131b28;
+  --border: #243044;
+  --text: #e8eefc;
+  --muted: #8b9bb8;
+  --accent: #5b8cff;
+  --good: #3dd68c;
+  --bad: #ff6b7a;
+  --card-radius: 12px;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 220px;
+  border-right: 1px solid var(--border);
+  padding: 20px 16px;
+  background: var(--bg-elevated);
+}
+
+.sidebar h1 {
+  font-size: 1.05rem;
+  margin: 0 0 16px;
+  letter-spacing: 0.02em;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nav a {
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.nav a:hover {
+  background: rgba(91, 140, 255, 0.12);
+}
+
+.nav a.active {
+  background: rgba(91, 140, 255, 0.2);
+  color: var(--text);
+}
+
+.main {
+  flex: 1;
+  padding: 24px 28px 40px;
+  max-width: 1400px;
+}
+
+.page-title {
+  margin: 0 0 8px;
+  font-size: 1.5rem;
+}
+
+.page-sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.grid {
+  display: grid;
+  gap: 16px;
+}
+
+.grid.cols-4 {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: 16px;
+}
+
+.card h3 {
+  margin: 0 0 8px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.metric-value {
+  font-size: 1.35rem;
+  font-weight: 650;
+}
+
+.table-wrap {
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+}
+
+table.data {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+table.data th,
+table.data td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  white-space: nowrap;
+}
+
+table.data th {
+  color: var(--muted);
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+}
+
+table.data tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  background: rgba(91, 140, 255, 0.15);
+  color: var(--text);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+input,
+select,
+button {
+  font: inherit;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+button.primary {
+  background: var(--accent);
+  border-color: transparent;
+  color: #0a0f18;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button.primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error {
+  color: var(--bad);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.chart {
+  height: 420px;
+}
+
+.chart.large {
+  height: 560px;
+}
+
+/* Sankey: height comes from JS (node/link budget) so the page grows and scrolls; no fixed vh clip */
+.sankey-chart-host {
+  width: 100%;
+  min-height: 520px;
+  overflow-x: auto;
+  overflow-y: visible;
+  margin: 0 -8px;
+}
+
+.card--sankey {
+  overflow: visible;
+}
