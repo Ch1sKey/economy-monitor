@@ -365,6 +365,18 @@ export function buildPlayerSankey(
   for (const row of rows) {
     const c = classifyEvent(row);
     if (c.confidence === "inferred" && !opts.includeInferred) continue;
+    const action = (row.action ?? "").toLowerCase();
+
+    // Hard rule: economy_deposit is server faucet to receiver wallet only.
+    // Never show it for actor/sender perspective in player Sankey.
+    if (action === "economy_deposit") {
+      const recvPlayer = uuidOrNameMatchesSelected(row.player_uuid, row.player_name, selectedUuid, displayName);
+      if (!recvPlayer) continue;
+    }
+    if (action === "economy_withdraw") {
+      const walletPlayer = uuidOrNameMatchesSelected(row.player_uuid, row.player_name, selectedUuid, displayName);
+      if (!walletPlayer) continue;
+    }
 
     const md = row.money_delta ?? "0";
     const act = row.action ?? "";
@@ -374,10 +386,6 @@ export function buildPlayerSankey(
     if (!rowInvolvesSelectedPlayer(row, selectedUuid, displayName)) continue;
 
     if (c.category === "faucet") {
-      if ((row.action ?? "").toLowerCase() === "economy_deposit") {
-        const recvPlayer = uuidOrNameMatchesSelected(row.player_uuid, row.player_name, selectedUuid, displayName);
-        if (!recvPlayer) continue;
-      }
       const amt = scaledToDecimalString(decimalToScaled(md) > 0n ? decimalToScaled(md) : 0n);
       if (isZeroDecimal(amt)) continue;
       const left = mapFaucetSource(row, opts.groupBy);

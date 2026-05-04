@@ -237,6 +237,13 @@ export function buildPlayerOverview(
     const md = row.money_delta ?? "0";
     const act = (row.action ?? "").toLowerCase();
 
+    const action = act.toLowerCase();
+
+    // economy_* is always server↔wallet and should only affect the wallet owner.
+    if ((action === "economy_deposit" || action === "economy_withdraw") && row.player_uuid !== uuid) {
+      continue;
+    }
+
     if (c.category === "faucet" && row.player_uuid === uuid) {
       const amt = scaledToDecimalString(decimalToScaled(md) > 0n ? decimalToScaled(md) : 0n);
       acc.faucet = addDecimalStrings(acc.faucet, amt);

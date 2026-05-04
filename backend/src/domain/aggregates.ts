@@ -63,9 +63,6 @@ export function aggregateOverview(
   const suspicious: EconomyEventRow[] = [];
 
   for (const row of rows) {
-    const pid = row.player_uuid;
-    if (pid) playersActive.add(pid);
-
     const c = classifyEvent(row);
     if (c.confidence === "inferred" && !opts.includeInferred) {
       continue;
@@ -73,8 +70,16 @@ export function aggregateOverview(
 
     const src = row.source ?? "";
     const act = row.action ?? "";
+    const action = act.toLowerCase();
     const key = `${src}::${act}`;
     const md = row.money_delta ?? "0";
+    const pid = row.player_uuid;
+    if (pid) playersActive.add(pid);
+
+    // economy_* must be wallet-side events only; never actor-side transfer semantics.
+    if ((action === "economy_deposit" || action === "economy_withdraw") && !pid) {
+      continue;
+    }
 
     if (c.category === "faucet") {
       const amt = faucetAmount(md);

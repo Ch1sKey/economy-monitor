@@ -112,6 +112,7 @@ export function registerPlayerRoutes(app: Hono<ApiEnv>) {
       if (cl.confidence === "inferred" && !includeInferred) continue;
       const md = e.money_delta ?? "0";
       const act = (e.action ?? "").toLowerCase();
+      if ((act === "economy_deposit" || act === "economy_withdraw") && e.player_uuid !== uuid) continue;
       const pos = decimalToScaled(md) > 0n;
       const absv = scaledToDecimalString(decimalToScaled(md) < 0n ? -decimalToScaled(md) : decimalToScaled(md));
 
